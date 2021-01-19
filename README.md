@@ -2,6 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/piell6hcrlwrcxp9?svg=true)](https://ci.appveyor.com/project/sheredom/json-h)
 [![Build status](https://api.travis-ci.org/repositories/sheredom/json.h.svg)](https://travis-ci.org/sheredom/json.h)
+[![TrustInSoft CI](https://ci.trust-in-soft.com/projects/sheredom/json.h.svg)](https://ci.trust-in-soft.com/projects/sheredom/json.h)
 
 A simple single header solution to parsing JSON in C and C++.
 

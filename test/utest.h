@@ -91,10 +91,12 @@ typedef uint64_t utest_uint64_t;
 */
 #include <limits.h>
 
-#if defined(__GLIBC__) && defined(__GLIBC_MINOR__)
+#if defined(__GLIBC__) && defined(__GLIBC_MINOR__) \
+ || defined(__TRUSTINSOFT_ANALYZER__)
 #include <time.h>
 
-#if ((2 < __GLIBC__) || ((2 == __GLIBC__) && (17 <= __GLIBC_MINOR__)))
+#if ((2 < __GLIBC__) || ((2 == __GLIBC__) && (17 <= __GLIBC_MINOR__))) \
+ || defined(__TRUSTINSOFT_ANALYZER__)
 /* glibc is version 2.17 or above, so we can just use clock_gettime */
 #define UTEST_USE_CLOCKGETTIME
 #else
