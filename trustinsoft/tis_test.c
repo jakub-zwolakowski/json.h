@@ -10,7 +10,7 @@ int main(void) {
         printf("fopen FAILED!");
         exit(1);
     } else {
-        if (getdelim(&json, &len, '\0', f) != 0) {
+        if (getline(&json, &len, f) != 0) {
             printf("json_parse(\"%s\", %zu);", json, len);
             struct json_value_s* root = json_parse(json, len);
             free(root);
