@@ -91,7 +91,7 @@ typedef uint64_t utest_uint64_t;
 */
 #include <limits.h>
 
-#if defined(__GLIBC__) && defined(__GLIBC_MINOR__)
+#if (defined(__GLIBC__) && defined(__GLIBC_MINOR__)) || defined(__TRUSTINSOFT_ANALYZER__)
 #include <time.h>
 
 #if ((2 < __GLIBC__) || ((2 == __GLIBC__) && (17 <= __GLIBC_MINOR__)))
@@ -253,12 +253,14 @@ UTEST_EXTERN struct utest_state_s utest_state;
 #endif
 #endif
 
+#ifndef __TRUSTINSOFT_ANALYZER__
 #if defined(__cplusplus)
 /* if we are using c++ we can use overloaded methods (its in the language) */
 #define UTEST_OVERLOADABLE
 #elif defined(__clang__)
 /* otherwise, if we are using clang with c - use the overloadable attribute */
 #define UTEST_OVERLOADABLE __attribute__((overloadable))
+#endif
 #endif
 
 #if defined(UTEST_OVERLOADABLE)
@@ -459,7 +461,7 @@ utest_type_printer(long long unsigned int i) {
     *utest_result = 1;                                                         \
   }
 
-#if defined(__clang__)
+#if defined(__clang__) && !defined(__TRUSTINSOFT_ANALYZER__)
 #define UTEST_ASSERT(x, y, cond)                                               \
   {                                                                            \
     _Pragma("clang diagnostic push")                                           \
@@ -481,7 +483,7 @@ utest_type_printer(long long unsigned int i) {
       return;                                                                  \
     }                                                                          \
   }
-#elif defined(__GNUC__)
+#elif defined(__GNUC__) && !defined(__TRUSTINSOFT_ANALYZER__)
 #define UTEST_ASSERT(x, y, cond)                                               \
   {                                                                            \
     UTEST_AUTO(x) xEval = (x);                                                 \
