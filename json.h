@@ -46,6 +46,8 @@
 #define json_weak __attribute__((weak))
 #elif defined(_MSC_VER)
 #define json_weak __inline
+#elif defined(__TRUSTINSOFT_ANALYZER__)
+#define json_weak __attribute__((weak))
 #else
 #error Non clang, non gcc, non MSVC compiler found!
 #endif
