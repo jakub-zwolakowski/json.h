@@ -89,7 +89,6 @@ def make_tis_test_config():
     # Whole common.config JSON.
     config = {
         "files": [
-            "stub.c",
             "tis_test.c",
         ],
         "cpp-extra-args": [
