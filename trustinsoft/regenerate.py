@@ -181,40 +181,47 @@ def make_main_cpp_test(machdep):
     )
     return test
 
-# def make_test(test_path, machdep):
-#     tis_test = {
-#         "name": "%s, %s" % (test_path, machdep["pretty_name"]),
-#         "include": common_config_path,
-#         "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
-#         "files": [ "test/bin/json_process.c" ],
-#         "val-args": (" %s" % (test_path)),
-#     }
-#     return tis_test
+def make_json_parse_test(test_path):
+    tis_test = {
+        # "name": "json_parse %s, %s" % (test_path, machdep["pretty_name"]),
+        "name": "json_parse %s" % (test_path),
+        "include": tis_test_config_path,
+        # "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
+        "filesystem": {
+            "files": [
+                {
+                    "name": "test.json",
+                    "from": test_path,
+                }
+            ]
+        }
+    }
+    return tis_test
 
 
 def make_tis_config():
+    parsing_tests = glob.glob(path.join("trustinsoft", "JSONTestSuite", "test_parsing", "*.json"))
     return (
         list(map(make_main_cpp_test, machdeps))
         +
-        [
-        {
-            "name": "tis_test.c test_parsing/y_number.json",
-            "include": "trustinsoft/tis_test.config",
-            "filesystem": {
-                "files": [
-                    {
-                        "name": "test.json",
-                        "from": "trustinsoft/JSONTestSuite/test_parsing/y_number.json",
-                    }
-                ]
-            }
-        }
-        ]
-
-        # list(map(
-        #     lambda t: make_process_test(t[0], t[1]),
-        #     tis_process_tests
-        # ))
+        list(map(
+            lambda t: make_json_parse_test(t),
+            parsing_tests
+        ))
+        # [
+        # {
+        #     "name": "tis_test.c test_parsing/y_number.json",
+        #     "include": "trustinsoft/tis_test.config",
+        #     "filesystem": {
+        #         "files": [
+        #             {
+        #                 "name": "test.json",
+        #                 "from": "trustinsoft/JSONTestSuite/test_parsing/y_number.json",
+        #             }
+        #         ]
+        #     }
+        # }
+        # ]
     )
 
 tis_config = make_tis_config()
