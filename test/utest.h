@@ -63,6 +63,13 @@ typedef uint64_t utest_uint64_t;
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __TRUSTINSOFT_ANALYZER__
+#define __GLIBC__ 2
+#define __GLIBC_MINOR__ 17
+#undef __clang__
+#undef __GNUC__
+#endif
+
 #if defined(_MSC_VER)
 #pragma warning(pop)
 #endif
