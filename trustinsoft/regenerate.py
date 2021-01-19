@@ -41,13 +41,13 @@ files_to_copy = [
 
 # Architectures.
 machdeps = [
-    # {
-    #     "machdep": "gcc_x86_32",
-    #     "pretty_name": "little endian 32-bit (x86)",
-    #     "fields": {
-    #         "address-alignment": 32
-    #     }
-    # },
+    {
+        "machdep": "gcc_x86_32",
+        "pretty_name": "little endian 32-bit (x86)",
+        "fields": {
+            "address-alignment": 32
+        }
+    },
     {
         "machdep": "gcc_x86_64",
         "pretty_name": "little endian 64-bit (x86)",
@@ -55,20 +55,20 @@ machdeps = [
             "address-alignment": 64
         }
     },
-    # {
-    #     "machdep": "gcc_ppc_32",
-    #     "pretty_name": "big endian 32-bit (PPC32)",
-    #     "fields": {
-    #         "address-alignment": 32
-    #     },
-    # },
-    # {
-    #     "machdep": "gcc_ppc_64",
-    #     "pretty_name": "big endian 64-bit (PPC64)",
-    #     "fields": {
-    #         "address-alignment": 64
-    #     },
-    # },
+    {
+        "machdep": "gcc_ppc_32",
+        "pretty_name": "big endian 32-bit (PPC32)",
+        "fields": {
+            "address-alignment": 32
+        },
+    },
+    {
+        "machdep": "gcc_ppc_64",
+        "pretty_name": "big endian 64-bit (PPC64)",
+        "fields": {
+            "address-alignment": 64
+        },
+    },
 ]
 
 # --------------------------------------------------------------------------- #
