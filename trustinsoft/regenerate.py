@@ -41,13 +41,13 @@ files_to_copy = [
 
 # Architectures.
 machdeps = [
-    {
-        "machdep": "gcc_x86_32",
-        "pretty_name": "little endian 32-bit (x86)",
-        "fields": {
-            "address-alignment": 32
-        }
-    },
+    # {
+    #     "machdep": "gcc_x86_32",
+    #     "pretty_name": "little endian 32-bit (x86)",
+    #     "fields": {
+    #         "address-alignment": 32
+    #     }
+    # },
     {
         "machdep": "gcc_x86_64",
         "pretty_name": "little endian 64-bit (x86)",
@@ -55,20 +55,20 @@ machdeps = [
             "address-alignment": 64
         }
     },
-    {
-        "machdep": "gcc_ppc_32",
-        "pretty_name": "big endian 32-bit (PPC32)",
-        "fields": {
-            "address-alignment": 32
-        },
-    },
-    {
-        "machdep": "gcc_ppc_64",
-        "pretty_name": "big endian 64-bit (PPC64)",
-        "fields": {
-            "address-alignment": 64
-        },
-    },
+    # {
+    #     "machdep": "gcc_ppc_32",
+    #     "pretty_name": "big endian 32-bit (PPC32)",
+    #     "fields": {
+    #         "address-alignment": 32
+    #     },
+    # },
+    # {
+    #     "machdep": "gcc_ppc_64",
+    #     "pretty_name": "big endian 64-bit (PPC64)",
+    #     "fields": {
+    #         "address-alignment": 64
+    #     },
+    # },
 ]
 
 # --------------------------------------------------------------------------- #
@@ -92,7 +92,6 @@ def make_tis_test_config():
             "stub.c",
             "tis_test.c",
         ],
-        "machdep": "gcc_x86_64",
         "cpp-extra-args": [
             "-I..",
             "-I.",
@@ -136,7 +135,14 @@ for machdep_config in machdep_configs:
 # --------------------------------------------------------------------------- #
 
 def make_main_cpp_test(machdep):
-    test = (
+    cpp_extra_args = [
+        "-I.",
+        "-Itest",
+        "-Itrustinsoft",
+        "-D__STDC_VERSION__=201112L",
+        "-DUTEST_USE_CLOCKGETTIME",
+    ]
+    tis_test = (
         {
             "name": "FULL main.cpp, %s" % (machdep["pretty_name"]),
             "files": [
@@ -163,30 +169,17 @@ def make_main_cpp_test(machdep):
                 "test/write_pretty.cpp",
             ],
             "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
-            "cpp-extra-args": [
-                "-I.",
-                "-Itest",
-                "-Itrustinsoft",
-                "-D__STDC_VERSION__=201112L",
-                "-DUTEST_USE_CLOCKGETTIME",
-            ],
-            "cxx-cpp-extra-args": [
-                "-I.",
-                "-Itest",
-                "-Itrustinsoft",
-                "-D__STDC_VERSION__=201112L",
-                "-DUTEST_USE_CLOCKGETTIME",
-            ]
+            "cpp-extra-args": cpp_extra_args,
+            "cxx-cpp-extra-args": cpp_extra_args,
         }
     )
-    return test
+    return tis_test
 
-def make_json_parse_test(test_path):
+def make_json_parse_test(test_path, machdep):
     tis_test = {
-        # "name": "json_parse %s, %s" % (test_path, machdep["pretty_name"]),
-        "name": "json_parse %s" % (test_path),
+        "name": "json_parse %s, %s" % (test_path, machdep["pretty_name"]),
         "include": tis_test_config_path,
-        # "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
+        "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
         "filesystem": {
             "files": [
                 {
@@ -198,30 +191,19 @@ def make_json_parse_test(test_path):
     }
     return tis_test
 
+JSONTestSuite = (
+    glob.glob(path.join("trustinsoft", "JSONTestSuite", "test_parsing", "*.json")) +
+    glob.glob(path.join("trustinsoft", "JSONTestSuite", "test_transform", "*.json"))
+)
 
 def make_tis_config():
-    parsing_tests = glob.glob(path.join("trustinsoft", "JSONTestSuite", "test_parsing", "*.json"))
     return (
         list(map(make_main_cpp_test, machdeps))
         +
         list(map(
-            lambda t: make_json_parse_test(t),
-            parsing_tests
+            lambda t: make_json_parse_test(t[0], t[1]),
+            product(JSONTestSuite, machdeps)
         ))
-        # [
-        # {
-        #     "name": "tis_test.c test_parsing/y_number.json",
-        #     "include": "trustinsoft/tis_test.config",
-        #     "filesystem": {
-        #         "files": [
-        #             {
-        #                 "name": "test.json",
-        #                 "from": "trustinsoft/JSONTestSuite/test_parsing/y_number.json",
-        #             }
-        #         ]
-        #     }
-        # }
-        # ]
     )
 
 tis_config = make_tis_config()
