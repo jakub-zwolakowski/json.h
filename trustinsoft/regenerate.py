@@ -176,8 +176,11 @@ def make_main_cpp_test(machdep):
     return tis_test
 
 def make_json_parse_test(test_path, machdep):
+    test_name = path.join (
+        path.basename(path.dirname(test_path)),
+        path.basename(test_path))
     tis_test = {
-        "name": "json_parse %s, %s" % (test_path, machdep["pretty_name"]),
+        "name": "%s, %s" % (test_name, machdep["pretty_name"]),
         "include": tis_test_config_path,
         "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
         "filesystem": {
