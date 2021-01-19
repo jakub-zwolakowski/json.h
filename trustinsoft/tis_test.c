@@ -11,6 +11,7 @@ int main(void) {
         exit(1);
     } else {
         if (getline(&json, &len, f) != 0) {
+            len = strlen(json);
             printf("json_parse(\"%s\", %zu);", json, len);
             struct json_value_s* root = json_parse(json, len);
             free(root);
