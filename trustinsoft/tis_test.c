@@ -101,6 +101,7 @@ int main(int argc, char **argv) {
     }
     /* Was this the expected result? */
     int return_value = 0;
+    /*@ assert result_as_expected: expected_result != -actual_result; */
     if (expected_result == -actual_result) {
         return_value = 1;
         printf("RESULT IS *NOT* AS EXPECTED\n");
