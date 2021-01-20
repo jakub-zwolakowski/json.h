@@ -63,9 +63,11 @@ typedef uint64_t utest_uint64_t;
 #include <stdlib.h>
 #include <string.h>
 
-/* MY STUFF */
+#ifdef __TRUSTINSOFT_ANALYZER__
 #define __GLIBC__ 1
 #define __GLIBC_MINOR__ 1
+#undef __clang__
+#endif
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
@@ -257,14 +259,12 @@ UTEST_EXTERN struct utest_state_s utest_state;
 #endif
 #endif
 
-#ifndef __TRUSTINSOFT_ANALYZER__
 #if defined(__cplusplus)
 /* if we are using c++ we can use overloaded methods (its in the language) */
 #define UTEST_OVERLOADABLE
 #elif defined(__clang__)
 /* otherwise, if we are using clang with c - use the overloadable attribute */
 #define UTEST_OVERLOADABLE __attribute__((overloadable))
-#endif
 #endif
 
 #if defined(UTEST_OVERLOADABLE)
