@@ -1,0 +1,7 @@
+$ tis-analyzer --interpreter -tis-config-load tis.config -tis-config-select 1
+[kernel] Loading configuration file tis.config (analysis #1)
+[kernel] user error: File tis.config: Wrong JSON type for field "files".
+                     Expected string or array (of string or object (with fields { ("name": string); ("cpp-command": null or string); ("cpp-extra-args": null or string); })). Got array
+                     ([ { "name": "test.c", "cxx-cpp-extra-args": "-DTEST" } ]).
+[kernel] user error: Cannot load the analysis configuration 1 due to previous errors.
+[kernel] TrustInSoft Kernel aborted: invalid user input.
