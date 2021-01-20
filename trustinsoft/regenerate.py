@@ -118,15 +118,12 @@ def make_main_cpp_config():
         "-I..",
         "-Itrustinsoft",
         "-D__STDC_VERSION__=201112L",
-        "-DUTEST_USE_CLOCKGETTIME",
     ]
     config = {
+        "prefix_path": "..",
         "files": (
-            [ "stub.c" ] +
-            list(map(
-                lambda file: path.join("..", file),
-                c_files + cpp_files)
-                )
+            [ path.join("trustinsoft", "stub.c") ] +
+            c_files + cpp_files
         ),
         "cpp-extra-args": cpp_extra_args,
         "cxx-cpp-extra-args": cpp_extra_args,
