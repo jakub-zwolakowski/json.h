@@ -98,7 +98,7 @@ typedef uint64_t utest_uint64_t;
 */
 #include <limits.h>
 
-#if (defined(__GLIBC__) && defined(__GLIBC_MINOR__))
+#if defined(__GLIBC__) && defined(__GLIBC_MINOR__)
 #include <time.h>
 
 #if ((2 < __GLIBC__) || ((2 == __GLIBC__) && (17 <= __GLIBC_MINOR__)))
@@ -488,7 +488,7 @@ utest_type_printer(long long unsigned int i) {
       return;                                                                  \
     }                                                                          \
   }
-#elif defined(__GNUC__) && !defined(__TRUSTINSOFT_ANALYZER__)
+#elif defined(__GNUC__)
 #define UTEST_ASSERT(x, y, cond)                                               \
   {                                                                            \
     UTEST_AUTO(x) xEval = (x);                                                 \
