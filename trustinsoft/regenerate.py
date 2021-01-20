@@ -175,9 +175,8 @@ def make_main_cpp_test(machdep):
     return tis_test
 
 def make_json_parse_test(test_path, machdep):
-    test_name = path.join (
-        path.basename(path.dirname(test_path)),
-        path.basename(test_path))
+    test_basename = path.basename(test_path)
+    test_name = test_basename.replace(".json", "")
     tis_test = {
         "name": "%s, %s" % (test_name, machdep["pretty_name"]),
         "include": tis_test_config_path,
@@ -185,11 +184,12 @@ def make_json_parse_test(test_path, machdep):
         "filesystem": {
             "files": [
                 {
-                    "name": "test.json",
+                    "name": test_basename,
                     "from": test_path,
                 }
             ]
-        }
+        },
+        "val-args": " %s" % test_basename
     }
     return tis_test
 
