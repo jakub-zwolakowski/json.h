@@ -30,7 +30,7 @@ args = parser.parse_args()
 # --------------------------------------------------------------------------- #
 
 # Directories.
-# common_config_path = path.join("trustinsoft", "common.config")
+main_cpp_config_path = path.join("trustinsoft", "main_cpp.config")
 tis_test_config_path = path.join("trustinsoft", "tis_test.config")
 include_dir = "trustinsoft"
 
@@ -86,7 +86,6 @@ for file in files_to_copy:
 # --------------------------------------------------------------------------- #
 
 def make_tis_test_config():
-    # Whole common.config JSON.
     config = {
         "files": [
             "tis_test.c",
@@ -100,13 +99,45 @@ def make_tis_test_config():
             "-I.",
         ],
     }
-    # Done.
     return config
 
 tis_test_config = make_tis_test_config()
 with open(tis_test_config_path, "w") as file:
     print("3. Generate the '%s' file." % tis_test_config_path)
     file.write(tis.string_of_json(tis_test_config))
+
+# --------------------------------------------------------------------------- #
+# ------------------ GENERATE trustinsoft/main_cpp.config ------------------- #
+# --------------------------------------------------------------------------- #
+
+def make_main_cpp_config():
+    c_files = glob.glob(path.join("test", "*.c"))
+    cpp_files = glob.glob(path.join("test", "*.cpp"))
+    cpp_extra_args = [
+        "-I.",
+        "-I..",
+        "-I../test",
+        "-D__STDC_VERSION__=201112L",
+        "-DUTEST_USE_CLOCKGETTIME",
+    ]
+    config = {
+        "files": (
+            [ "stub.c" ] +
+            list(map(
+                lambda file: path.join("..", file),
+                c_files + cpp_files)
+                )
+        ),
+        "cpp-extra-args": cpp_extra_args,
+        "cxx-cpp-extra-args": cpp_extra_args,
+    }
+    # Done.
+    return config
+
+main_cpp_config = make_main_cpp_config()
+with open(main_cpp_config_path, "w") as file:
+    print("4. Generate the '%s' file." % main_cpp_config_path)
+    file.write(tis.string_of_json(main_cpp_config))
 
 # ---------------------------------------------------------------------------- #
 # ------------------ GENERATE trustinsoft/<machdep>.config ------------------- #
@@ -121,7 +152,7 @@ def make_machdep_config(machdep):
         machdep_config[field] = fields[field]
     return machdep_config
 
-print("4. Generate 'trustinsoft/<machdep>.config' files...")
+print("5. Generate 'trustinsoft/<machdep>.config' files...")
 machdep_configs = map(make_machdep_config, machdeps)
 for machdep_config in machdep_configs:
     file = path.join("trustinsoft", "%s.config" % machdep_config["machdep"])
@@ -134,44 +165,11 @@ for machdep_config in machdep_configs:
 # --------------------------------------------------------------------------- #
 
 def make_main_cpp_test(machdep):
-    cpp_extra_args = [
-        "-I.",
-        "-Itest",
-        "-Itrustinsoft",
-        "-D__STDC_VERSION__=201112L",
-        "-DUTEST_USE_CLOCKGETTIME",
-    ]
-    tis_test = (
-        {
-            "name": "FULL main.cpp, %s" % (machdep["pretty_name"]),
-            "files": [
-                "trustinsoft/stub.c",
-                "test/main.cpp",
-                "test/test.c",
-                "test/allocator.cpp",
-                "test/allow_c_style_comments.cpp",
-                "test/allow_equals_in_object.c",
-                "test/allow_global_object.c",
-                "test/allow_hexadecimal_numbers.c",
-                "test/allow_inf_and_nan.c",
-                "test/allow_json5.c",
-                "test/allow_leading_or_trailing_decimal_point.c",
-                "test/allow_leading_plus_sign.c",
-                "test/allow_location_information.c",
-                "test/allow_multi_line_strings.c",
-                "test/allow_no_commas.c",
-                "test/allow_simplified_json.c",
-                "test/allow_single_quoted_strings.c",
-                "test/allow_trailing_comma.cpp",
-                "test/allow_unquoted_keys.c",
-                "test/write_minified.cpp",
-                "test/write_pretty.cpp",
-            ],
-            "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
-            "cpp-extra-args": cpp_extra_args,
-            "cxx-cpp-extra-args": cpp_extra_args,
-        }
-    )
+    tis_test = {
+        "name": "FULL main.cpp, %s" % (machdep["pretty_name"]),
+        "include": path.join("trustinsoft", "main_cpp.config"),
+        "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
+    }
     return tis_test
 
 def make_json_parse_test(test_path, machdep):
@@ -210,14 +208,14 @@ def make_tis_config():
 
 tis_config = make_tis_config()
 with open("tis.config", "w") as file:
-    print("5. Generate the 'tis.config' file.")
+    print("6. Generate the 'tis.config' file.")
     file.write(tis.string_of_json(tis_config))
 
 # --------------------------------------------------------------------------- #
 # ------------------------------ COPY .h FILES ------------------------------ #
 # --------------------------------------------------------------------------- #
 
-print("6. Copy generated files.")
+print("7. Copy generated files.")
 for file in files_to_copy:
     with open(file['src'], 'r') as f_src:
         os.makedirs(path.dirname(file['dst']), exist_ok=True)
