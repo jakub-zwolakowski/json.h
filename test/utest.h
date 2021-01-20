@@ -63,6 +63,10 @@ typedef uint64_t utest_uint64_t;
 #include <stdlib.h>
 #include <string.h>
 
+/* MY STUFF */
+#define __GLIBC__ 1
+#define __GLIBC_MINOR__ 1
+
 #if defined(_MSC_VER)
 #pragma warning(pop)
 #endif
@@ -91,7 +95,7 @@ typedef uint64_t utest_uint64_t;
 */
 #include <limits.h>
 
-#if (defined(__GLIBC__) && defined(__GLIBC_MINOR__)) || defined(__TRUSTINSOFT_ANALYZER__)
+#if (defined(__GLIBC__) && defined(__GLIBC_MINOR__))
 #include <time.h>
 
 #if ((2 < __GLIBC__) || ((2 == __GLIBC__) && (17 <= __GLIBC_MINOR__)))
