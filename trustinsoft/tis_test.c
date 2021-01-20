@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
             expected_result = -1; /* Failure is expected */
     }
     switch(expected_result) {
-        case 1: printf("EXPECTED PARSING RESULT: SUCCESS\n"); break;
+        case  1: printf("EXPECTED PARSING RESULT: SUCCESS\n"); break;
         case -1: printf("EXPECTED PARSING RESULT: FAILURE\n"); break;
         default: printf("EXPECTED PARSING RESULT: WHATEVER\n"); break;
     }
@@ -31,14 +31,12 @@ int main(int argc, char **argv) {
     }
     /* Read the JSON */
     char *src = NULL;
-    size_t len;
-    if (getline(&src, &len, f) <= 0) {
-        printf("getline FAILED!");
-        fclose(f);
-        exit(3);
+    size_t len = 0;
+    if (getdelim(&src, &len, '\0', f) <= 0) {
+        printf("getdelim DID NOT READ ANYTHING!");
     }
     /* Prepare the parsing parameters */
-    size_t src_size = strlen(src);
+    size_t src_size = src == NULL ? 0 : strlen(src);
     size_t flags_bitset = json_parse_flags_default;
     struct json_value_s *value;
     struct json_parse_result_s result;
@@ -46,7 +44,10 @@ int main(int argc, char **argv) {
     printf("CALL json_parse_ex\n");
     printf("> src_size = %zu\n", src_size);
     printf("> flags_bitset = %zu\n", flags_bitset);
-    printf("--- JSON BEGINNING ---\n%s\n--- JSON END ---\n", src);
+    if (src)
+        printf("--- JSON BEGINNING ---\n%s\n--- JSON END ---\n", src);
+    else
+        printf("--- JSON BEGINNING ---\n--- JSON END ---\n");
     /* Call json_parse_ex */
     value = json_parse_ex(src, src_size, flags_bitset, NULL, 0, &result);
     /* Handle the result */
