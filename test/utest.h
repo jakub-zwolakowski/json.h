@@ -67,6 +67,7 @@ typedef uint64_t utest_uint64_t;
 #define __GLIBC__ 1
 #define __GLIBC_MINOR__ 1
 #undef __clang__
+#undef __GNUC__
 #endif
 
 #if defined(_MSC_VER)
@@ -465,7 +466,7 @@ utest_type_printer(long long unsigned int i) {
     *utest_result = 1;                                                         \
   }
 
-#if defined(__clang__) && !defined(__TRUSTINSOFT_ANALYZER__)
+#if defined(__clang__)
 #define UTEST_ASSERT(x, y, cond)                                               \
   {                                                                            \
     _Pragma("clang diagnostic push")                                           \
