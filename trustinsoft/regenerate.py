@@ -116,7 +116,7 @@ def make_main_cpp_config():
     cpp_extra_args = [
         "-I.",
         "-I..",
-        "-I../test",
+        "-Itrustinsoft",
         "-D__STDC_VERSION__=201112L",
         "-DUTEST_USE_CLOCKGETTIME",
     ]
