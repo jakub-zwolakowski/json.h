@@ -113,14 +113,20 @@ with open(tis_test_config_path, "w") as file:
 def make_main_cpp_config():
     c_files = glob.glob(path.join("test", "*.c"))
     cpp_files = glob.glob(path.join("test", "*.cpp"))
-    cpp_extra_args = [
+    includes = [
         "-I.",
-        "-I..",
         "-Itrustinsoft",
-        "-D__STDC_VERSION__=201112L",
-        "-D__GLIBC_MINOR__=17",
-        "-U__clang__",
     ]
+    cpp_extra_args = (
+        includes +
+        [
+            "-D__GLIBC__=3",
+            "-D__GLIBC_MINOR__=17",
+            "-U__GNUC__",
+            "-U__clang__",
+        ]
+    )
+    cxx_cpp_extra_args = includes + [ "-D__GLIBC_MINOR__=17" ]
     config = {
         "prefix_path": "..",
         "files": (
@@ -128,7 +134,7 @@ def make_main_cpp_config():
             c_files + cpp_files
         ),
         "cpp-extra-args": cpp_extra_args,
-        "cxx-cpp-extra-args": cpp_extra_args,
+        "cxx-cpp-extra-args": cxx_cpp_extra_args,
     }
     # Done.
     return config

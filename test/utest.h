@@ -64,8 +64,7 @@ typedef uint64_t utest_uint64_t;
 #include <string.h>
 
 #ifdef __TRUSTINSOFT_ANALYZER__
-#define __GLIBC__ 2
-#undef __GNUC__
+#define __GLIBC__ 3
 #endif
 
 #if defined(_MSC_VER)
