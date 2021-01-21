@@ -118,6 +118,8 @@ def make_main_cpp_config():
         "-I..",
         "-Itrustinsoft",
         "-D__STDC_VERSION__=201112L",
+        "-D__GLIBC_MINOR__=17",
+        "-U__clang__",
     ]
     config = {
         "prefix_path": "..",
