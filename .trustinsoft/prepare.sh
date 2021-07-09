@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt-get update
-apt-get install cmake
+apt-get -y install cmake
 
 # Build tests (create "generated.h")
 cmake test
