@@ -8,4 +8,4 @@ make
 ./json_test
 
 # Regenerate TrustInSoft config
-./trustinsoft/regenerate.py
+./.trustinsoft/regenerate.py

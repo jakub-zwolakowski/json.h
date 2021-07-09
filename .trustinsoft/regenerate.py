@@ -3,7 +3,7 @@
 # This script regenerates TrustInSoft CI configuration.
 
 # Run from the root of the project:
-# $ python3 trustinsoft/regenerate.py
+# $ python3 .trustinsoft/regenerate.py
 
 import tis
 
@@ -30,11 +30,11 @@ args = parser.parse_args()
 # --------------------------------------------------------------------------- #
 
 # Directories.
-main_cpp_config_path = path.join("trustinsoft", "main_cpp.config")
-JSONTestSuite_config_path = path.join("trustinsoft", "JSONTestSuite.config")
+main_cpp_config_path = path.join(".trustinsoft", "main_cpp.config")
+JSONTestSuite_config_path = path.join(".trustinsoft", "JSONTestSuite.config")
 
-JSONTestSuite_path = path.join("trustinsoft", "JSONTestSuite")
-include_dir = "trustinsoft"
+JSONTestSuite_path = path.join(".trustinsoft", "JSONTestSuite")
+include_dir = ".trustinsoft"
 
 # Generated files which need to be a part of the repository.
 files_to_copy = [
@@ -79,12 +79,12 @@ machdeps = [
 
 # Initial check.
 print("1. Check if all necessary directories and files exist...")
-tis.check_dir("trustinsoft")
+tis.check_dir(".trustinsoft")
 for file in files_to_copy:
     tis.check_file(file['src'])
 
 # --------------------------------------------------------------------------- #
-# ------------------ GENERATE trustinsoft/main_cpp.config ------------------- #
+# ------------------ GENERATE .trustinsoft/main_cpp.config ------------------ #
 # --------------------------------------------------------------------------- #
 
 def make_main_cpp_config():
@@ -92,7 +92,7 @@ def make_main_cpp_config():
     cpp_files = glob.glob(path.join("test", "*.cpp"))
     cxx_cpp_extra_args = [
         "-I.",
-        "-Itrustinsoft",
+        "-I.trustinsoft",
     ]
     cpp_extra_args = (
         cxx_cpp_extra_args +
@@ -104,7 +104,7 @@ def make_main_cpp_config():
     config = {
         "prefix_path": "..",
         "files": (
-            [ path.join("trustinsoft", "stub.c") ] +
+            [ path.join(".trustinsoft", "stub.c") ] +
             c_files + cpp_files
         ),
         "cpp-extra-args": cpp_extra_args,
@@ -119,7 +119,7 @@ with open(main_cpp_config_path, "w") as file:
     file.write(tis.string_of_json(main_cpp_config))
 
 # ---------------------------------------------------------------------------- #
-# ----------------- GENERATE trustinsoft/JSONTestSuite.config ---------------- #
+# ---------------- GENERATE .trustinsoft/JSONTestSuite.config ---------------- #
 # ---------------------------------------------------------------------------- #
 
 def make_JSONTestSuite_config():
@@ -137,7 +137,7 @@ with open(JSONTestSuite_config_path, "w") as file:
     file.write(tis.string_of_json(make_JSONTestSuite_config()))
 
 # ---------------------------------------------------------------------------- #
-# ------------------ GENERATE trustinsoft/<machdep>.config ------------------- #
+# ----------------- GENERATE .trustinsoft/<machdep>.config ------------------- #
 # ---------------------------------------------------------------------------- #
 
 def make_machdep_config(machdep):
@@ -149,9 +149,9 @@ def make_machdep_config(machdep):
         machdep_config[field] = fields[field]
     return machdep_config
 
-print("4. Generate 'trustinsoft/<machdep>.config' files...")
+print("4. Generate '.trustinsoft/<machdep>.config' files...")
 for machdep_config in map(make_machdep_config, machdeps):
-    file = path.join("trustinsoft", "%s.config" % machdep_config["machdep"])
+    file = path.join(".trustinsoft", "%s.config" % machdep_config["machdep"])
     with open(file, "w") as f:
         print("   > Generate the '%s' file." % file)
         f.write(tis.string_of_json(machdep_config))
@@ -163,8 +163,8 @@ for machdep_config in map(make_machdep_config, machdeps):
 def make_main_cpp_test(machdep):
     return {
         "name": "FULL test/main.cpp, %s" % (machdep["pretty_name"]),
-        "include": path.join("trustinsoft", "main_cpp.config"),
-        "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
+        "include": path.join(".trustinsoft", "main_cpp.config"),
+        "include_": path.join(".trustinsoft", "%s.config" % machdep["machdep"]),
     }
 
 def make_json_parse_test(test_path, machdep):
@@ -173,7 +173,7 @@ def make_json_parse_test(test_path, machdep):
     return {
         "name": "%s, %s" % (test_name, machdep["pretty_name"]),
         "include": JSONTestSuite_config_path,
-        "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
+        "include_": path.join(".trustinsoft", "%s.config" % machdep["machdep"]),
         "filesystem": {
             "files": [
                 {
@@ -199,7 +199,7 @@ def make_tis_config():
         ))
     )
 
-with open(path.join("trustinsoft", "config.json"), "w") as file:
+with open(path.join(".trustinsoft", "config.json"), "w") as file:
     print("5. Generate the 'config.json' file.")
     file.write(tis.string_of_json(make_tis_config()))
 
