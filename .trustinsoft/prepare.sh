@@ -11,5 +11,10 @@ cmake test
 # Make tests
 #./json_test
 
+python --version
+python3 --version
+python3.6 --version
+python3.8 --version
+
 # Regenerate TrustInSoft config
 ./.trustinsoft/regenerate.py
