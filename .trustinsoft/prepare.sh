@@ -5,10 +5,10 @@ apt-get -y install cmake
 
 # Build tests (create "generated.h")
 cmake test
-make
+#make
 
 # Make tests
-./json_test
+#./json_test
 
 # Regenerate TrustInSoft config
 ./.trustinsoft/regenerate.py
