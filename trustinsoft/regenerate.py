@@ -157,7 +157,7 @@ for machdep_config in map(make_machdep_config, machdeps):
         f.write(tis.string_of_json(machdep_config))
 
 # --------------------------------------------------------------------------- #
-# --------------------------- GENERATE tis.config --------------------------- #
+# --------------------------- GENERATE config.json -------------------------- #
 # --------------------------------------------------------------------------- #
 
 def make_main_cpp_test(machdep):
@@ -199,8 +199,8 @@ def make_tis_config():
         ))
     )
 
-with open("tis.config", "w") as file:
-    print("5. Generate the 'tis.config' file.")
+with open(path.join("trustinsoft", "config.json"), "w") as file:
+    print("5. Generate the 'config.json' file.")
     file.write(tis.string_of_json(make_tis_config()))
 
 # --------------------------------------------------------------------------- #
