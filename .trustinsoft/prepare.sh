@@ -2,6 +2,7 @@
 
 apt-get update
 apt-get -y install cmake
+apt-get -y install python3.8
 
 # Build tests (create "generated.h")
 cmake test
