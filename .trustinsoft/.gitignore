@@ -1,0 +1,5 @@
+*.config
+config.json
+__vfs-*
+generated.h
+__pycache__
