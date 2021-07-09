@@ -163,9 +163,8 @@ for machdep_config in map(make_machdep_config, machdeps):
 def make_main_cpp_test(machdep):
     return {
         "name": "FULL test/main.cpp, %s" % (machdep["pretty_name"]),
-        "prefix_path": "..",
-        "include": path.join("..", ".trustinsoft", "main_cpp.config"),
-        "include_": path.join("..", ".trustinsoft", "%s.config" % machdep["machdep"]),
+        "include": "main_cpp.config",
+        "include_": "%s.config" % machdep["machdep"],
     }
 
 def make_json_parse_test(test_path, machdep):
@@ -173,9 +172,9 @@ def make_json_parse_test(test_path, machdep):
     test_name = test_basename.replace(".json", "")
     return {
         "name": "%s, %s" % (test_name, machdep["pretty_name"]),
+        "include": "JSONTestSuite.config",
+        "include_": "%s.config" % machdep["machdep"],
         "prefix_path": "..",
-        "include": path.join("..", JSONTestSuite_config_path),
-        "include_": path.join("..", ".trustinsoft", "%s.config" % machdep["machdep"]),
         "filesystem": {
             "files": [
                 {
