@@ -1,4 +1,4 @@
-*.config
+*_config.json
 config.json
 __vfs-*
 generated.h
