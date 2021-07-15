@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ..
+
 # Install packages
 apt-get update
 apt-get -y install cmake
